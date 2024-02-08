@@ -16,5 +16,13 @@
   },
   "scripts": {
     "start": "cds-serve"
+  },
+  "cds": {
+    "requires": {
+      "northwind": {
+        "kind": "odata",
+        "model": "srv/external/northwind"
+      }
+    }
   }
 }
