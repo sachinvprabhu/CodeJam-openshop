@@ -1,0 +1,16 @@
+GET http://localhost:4004/v2/odata/v4/catalog/Products
+
+###
+
+GET http://localhost:4004/v2/odata/v4/catalog/Books
+
+
+###
+POST http://localhost:4004/v2/odata/v4/catalog/Books
+content-type: application/json
+
+{ 
+    "ID": 3,
+    "title": "Harry Potter",
+    "stock": 250 
+}
