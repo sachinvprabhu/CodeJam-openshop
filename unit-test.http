@@ -14,3 +14,14 @@ content-type: application/json
     "title": "Harry Potter",
     "stock": 250 
 }
+
+###
+GET http://localhost:4004/v2/odata/v4/catalog/Products(1)
+
+###
+POST  http://localhost:4004/v2/odata/v4/catalog/Products(1)/checkPrice()
+content-type: application/json 
+
+{
+    "units":10
+}
