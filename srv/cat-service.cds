@@ -11,5 +11,9 @@ service CatalogService {
       FinalPrice : Decimal;
       Discount : Decimal;
     };
+    action order(units : Integer) returns Boolean;
   };
+
+  entity Orders as projection on my.Orders;
+  entity OrderProducts as projection on my.OrderProducts;
 }

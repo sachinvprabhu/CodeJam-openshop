@@ -25,3 +25,11 @@ content-type: application/json
 {
     "units":10
 }
+
+###
+POST  http://localhost:4004/v2/odata/v4/catalog/Products(1)/order()
+content-type: application/json 
+
+{
+    "units":10
+}
