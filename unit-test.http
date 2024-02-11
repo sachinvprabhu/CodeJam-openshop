@@ -33,3 +33,15 @@ content-type: application/json
 {
     "units":10
 }
+
+###
+POST  https://b752d8e1trial-dev-openshop-srv.cfapps.us10-001.hana.ondemand.com/v2/odata/v4/catalog/Products(1)/order()
+content-type: application/json 
+
+{
+    "units":2
+}
+
+###
+
+GET  https://b752d8e1trial-dev-openshop-srv.cfapps.us10-001.hana.ondemand.com/v2/odata/v4/catalog/Orders?$expand=Products
