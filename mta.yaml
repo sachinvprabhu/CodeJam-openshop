@@ -1,38 +1,55 @@
-_schema-version: '3.1'
+_schema-version: "3.1"
 ID: OpenShop
+description: A simple CAP project.
 version: 1.0.0
-description: "A simple CAP project."
-parameters:
-  enable-parallel-deployments: true
-build-parameters:
-  before-all:
-    - builder: custom
-      commands:
-        - npx cds build --production
 modules:
   - name: OpenShop-srv
     type: nodejs
     path: gen/srv
+    requires:
+      - name: openshop-db
+      - name: openshop-destination
+      - name: openshop-auth
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
     parameters:
       buildpack: nodejs_buildpack
     build-parameters:
       builder: npm
-    provides:
-      - name: srv-api # required by consumers of CAP services (e.g. approuter)
-        properties:
-          srv-url: ${default-url}
-    requires:
-      - name: openshop-db
-      - name: openshop-destination
-
   - name: openshop-db-deployer
     type: hdb
     path: gen/db
-    parameters:
-      buildpack: nodejs_buildpack
     requires:
       - name: openshop-db
-
+    parameters:
+      buildpack: nodejs_buildpack
+  - name: OpenShop-app-content
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: OpenShop-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - comairbusproductreport.zip
+          name: comairbusproductreport
+          target-path: resources/
+  - name: comairbusproductreport
+    type: html5
+    path: app/product-report
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms:
+        []
 resources:
   - name: openshop-db
     type: com.sap.xs.hdi-container
@@ -42,5 +59,39 @@ resources:
   - name: openshop-destination
     type: org.cloudfoundry.managed-service
     parameters:
+      config:
+        HTML5Runtime_enabled: false
+        init_data:
+          instance:
+            destinations:
+              - Authentication: NoAuthentication
+                Name: ui5
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://ui5.sap.com
+            existing_destinations_policy: update
       service: destination
       service-plan: lite
+  - name: OpenShop-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-name: OpenShop-html5-srv
+      service-plan: app-host
+  - name: openshop-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: openshop-${org}-${space}
+        tenant-mode: dedicated
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npx cds build --production
