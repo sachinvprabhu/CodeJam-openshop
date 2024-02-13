@@ -1,0 +1,28 @@
+<mvc:View controllerName="com.airbus.newshop.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content>
+            <Table items="{/Products}">
+                <columns>
+                    <Column><Label text="Product Name"/></Column>
+                    <Column> <Label text="QuantityPerUnit"></Label></Column>
+                    <Column> <Label text="UnitPrice"></Label></Column>
+                    <Column> <Label text="Actions"></Label></Column>
+                </columns>
+                <items>
+                <ColumnListItem >
+                    <Text text="{ProductName}"/>
+                    <Text text="{QuantityPerUnit}"/>
+                    <Text text="{UnitPrice}"/>
+                    <HBox >
+                        <Input type="Number"/>
+                        <Button press="order" text="Order"/>
+                    </HBox>
+                    
+                </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>
