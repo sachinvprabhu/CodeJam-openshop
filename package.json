@@ -37,7 +37,8 @@
                     "url": "https://services.odata.org/V4/Northwind/Northwind.svc/"
                 }
             },
-            "db": "hana"
+            "db": "hana",
+            "auth": "xsuaa"
         }
     }
 }
